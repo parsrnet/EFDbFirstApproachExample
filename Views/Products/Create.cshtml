@@ -1,0 +1,78 @@
+﻿@model EFDbFirstApproachExample.Models.Product
+@using EFDbFirstApproachExample.HtmlHelpers
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Create Product</h2>
+
+@using (Html.BeginForm("Create", "Products", FormMethod.Post, new { enctype="multipart/form-data" }))
+{
+	<div class="form-row">
+		<div class="form-group col-md-6">
+			@Html.LabelFor(p => p.ProductID)
+			@Html.TextBoxFor(p => p.ProductName, new { placeholder="Product Name", @class="form-control" })
+			@Html.ValidationMessageFor(p => p.ProductName)
+		</div>
+		<div class="form-group col-md-6">
+			@Html.LabelFor(p => p.Price)
+			@Html.TextBoxFor(p => p.Price, new { placeholder="Price", @class="form-control" })
+			@Html.ValidationMessageFor(p => p.Price)
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-6">
+			@Html.LabelFor(p => p.DOP)
+			@Html.TextBoxFor(p => p.DOP, new { placeholder="Date of Purchase", @class="form-control" })
+			@Html.ValidationMessageFor(p => p.DOP)
+		</div>
+		<div class="form-group col-md-6">
+			<div class="form-check">
+				@Html.LabelFor(p => p.AvailabilityStatus, new { @class="form-check-label" })
+			</div>
+			<div class="form-check">
+				@Html.RadioButtonFor(p => p.AvailabilityStatus, "InStock", new { @class="form-check-input" }) In Stock
+			</div>
+			<div class="form-check">
+				@Html.RadioButtonFor(p => p.AvailabilityStatus, "OutOfStock", new { @class="form-check-input" }) Out of Stock
+			</div>
+			@Html.ValidationMessageFor(p => p.AvailabilityStatus)
+		</div>
+		@*
+			@Html.DropDownListFor(p => p.AvailabilityStatus, new List<SelectListItem>() {
+				new SelectListItem() { Text="In Stock", Value="InStock" },
+				new SelectListItem() { Text="Out of Stock", Value="OutOfStock"},
+			}, "Availability Status", new { @class="form-control" })
+		*@
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-6">
+			@Html.LabelFor(p => p.Category)
+			@Html.DropDownListFor(p => p.CategoryID, new SelectList(ViewBag.Categories, "CategoryID", "CategoryName"), "Category", new { @class="form-control" })
+			@Html.ValidationMessageFor(p => p.CategoryID)
+		</div>
+		<div class="form-group col-md-6">
+			@Html.LabelFor(p => p.Brand)
+			@Html.DropDownListFor(p => p.BrandID, new SelectList(ViewBag.Brands, "BrandID", "BrandName"), "Brand", new { @class="form-control" })
+			@Html.ValidationMessageFor(p => p.BrandID)
+		</div>
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(p => p.Img)
+		@Html.File("form-control-file")
+		@Html.ValidationMessageFor(p => p.Img)
+	</div>
+	<div class="form-group">
+		<div class="form-check">
+			@Html.CheckBoxFor(p => p.Active.Value, new { @class="form-check-input", value="true" })
+			@Html.LabelFor(p => p.Active, new { @class="form-check-label" })
+			@Html.ValidationMessageFor(p => p.Active)
+		</div>
+	</div>
+
+	@Html.ValidationSummary()
+	<button type="submit" class="btn btn-success">Create</button>
+	<a class="btn btn-danger" href="/products/index">Cancel</a>
+}
